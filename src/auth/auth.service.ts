@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { User } from 'src/user/schema/user.schema';
 import { UserService } from 'src/user/user.service';
 import { SignInDto } from './dto/sign-in.dto';
+import { UserPayload } from './interfaces/user.interface';
 
 export interface AccessTokenInfo {
   access_token: string;
@@ -23,12 +23,15 @@ export class AuthService {
    * @returns - access token
    * @memberof AuthService
    */
-  private async authenticate(user: User): Promise<AccessTokenInfo> {
-    const payload: Omit<User, 'password'> = {
+  private async authenticate(user: UserPayload): Promise<AccessTokenInfo> {
+    const payload: Omit<UserPayload, 'password'> = {
       email: user.email,
       userName: user.userName,
     };
-    const accessToken = await this.jwtService.signAsync(payload);
+    const accessToken = await this.jwtService.signAsync(payload, {
+      expiresIn: '1h',
+    });
+
     return {
       access_token: accessToken,
     };
