@@ -9,12 +9,14 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './schema/user.schema';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthGuard } from 'src/shared/guards/auth/auth.guard';
 
 @ApiTags('User')
 @Controller('user')
@@ -48,7 +50,7 @@ export class UserController {
   }
 
   @HttpCode(HttpStatus.OK)
-  // @UseGuards(AuthGuard) TODO: Implement AuthGuard
+  @UseGuards(AuthGuard)
   @Put(':id')
   public async updateUser(
     @Param('id') id: string,
@@ -58,21 +60,21 @@ export class UserController {
   }
 
   @HttpCode(HttpStatus.OK)
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get(':id')
   getUserById(@Param('id') id: string): Promise<User | null> {
     return this.userService.getUserById(id);
   }
 
   @HttpCode(HttpStatus.OK)
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get()
   public async getUserList(): Promise<User[]> {
     return this.userService.getUserList({});
   }
 
   @HttpCode(HttpStatus.OK)
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Delete(':id')
   public async deleteUser(@Param('id') id: string): Promise<unknown> {
     return this.userService.deleteUser(id);
