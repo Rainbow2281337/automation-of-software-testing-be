@@ -46,7 +46,7 @@ export class UserService extends RepositoryAbstract<User, UserDocument> {
    * @returns - created user
    * @memberof UserService
    */
-  public async createUser(userData: CreateUserDto): Promise<User> {
+  public createUser(userData: CreateUserDto): Promise<User> {
     const data = {
       ...userData,
       password: this.encryptPassword(userData.password),
