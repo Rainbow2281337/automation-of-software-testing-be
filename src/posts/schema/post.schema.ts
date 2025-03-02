@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { Comment } from 'src/comment/schema/comment.schema';
 
 @Schema()
 export class Posts {
@@ -10,7 +11,7 @@ export class Posts {
   content: string;
 
   @Prop()
-  comments: string[];
+  comments?: Comment[];
 }
 
 export const PostsSchema = SchemaFactory.createForClass(Posts);
