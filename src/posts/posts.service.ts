@@ -1,13 +1,24 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { RepositoryAbstract } from 'src/shared/db-tools/repository-abstract';
 import { Posts, PostsDocument } from './schema/post.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { CommentService } from 'src/comment/comment.service';
+import { CreatePostDto } from './dto/create-post.dto';
 
 @Injectable()
 export class PostsService extends RepositoryAbstract<Posts, PostsDocument> {
-  constructor(@InjectModel(Posts.name) postModel: Model<PostsDocument>) {
+  constructor(
+    @InjectModel(Posts.name) postModel: Model<PostsDocument>,
+    @Inject(forwardRef(() => CommentService))
+    private readonly commentService: CommentService,
+  ) {
     super(postModel);
   }
 
@@ -18,10 +29,9 @@ export class PostsService extends RepositoryAbstract<Posts, PostsDocument> {
    * @returns - created post
    * @memberof PostsService
    */
-  public createPost(postData: Posts): Promise<Posts> {
+  public createPost(postData: CreatePostDto): Promise<Posts> {
     return this.create({
       ...postData,
-      comments: [],
     });
   }
 
@@ -52,7 +62,7 @@ export class PostsService extends RepositoryAbstract<Posts, PostsDocument> {
     const post = await this.findOne({ _id: id });
 
     if (!post) {
-      throw new NotFoundException(`Post with provided id: ${id} not found`);
+      throw new NotFoundException(`Post with id ${id} not found`);
     }
     return post;
   }

@@ -30,10 +30,7 @@ export class PostsController {
     type: Posts,
   })
   public create(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.createPost({
-      ...createPostDto,
-      comments: [],
-    });
+    return this.postsService.createPost(createPostDto);
   }
 
   @Get()
