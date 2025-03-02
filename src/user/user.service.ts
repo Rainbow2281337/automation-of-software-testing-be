@@ -121,6 +121,9 @@ export class UserService extends RepositoryAbstract<User, UserDocument> {
     id: string,
     data: Partial<User>,
   ): Promise<User | null> {
+    if (data.password) {
+      data.password = this.encryptPassword(data.password);
+    }
     return this.update({ _id: id }, data);
   }
 
