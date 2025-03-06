@@ -6,6 +6,7 @@ import { SignInDto } from './dto/sign-in.dto';
 import { UserPayload } from './interfaces/user.interface';
 
 export interface AccessTokenInfo {
+  payload: Omit<UserPayload, 'password'>;
   access_token: string;
 }
 
@@ -34,6 +35,7 @@ export class AuthService {
 
     return {
       access_token: accessToken,
+      payload: payload,
     };
   }
 

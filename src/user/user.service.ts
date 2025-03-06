@@ -93,6 +93,15 @@ export class UserService extends RepositoryAbstract<User, UserDocument> {
     return user;
   }
 
+  public async getUserByEmail(email: string): Promise<User | null> {
+    const user = await this.findOne({ email: email });
+    if (!user) {
+      throw new NotFoundException(`User with provided id: ${email} not found`);
+    }
+
+    return user;
+  }
+
   /**
    * Takes a filter as a param and returns a list of users based on the filter if users are found
    *

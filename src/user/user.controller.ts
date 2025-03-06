@@ -68,6 +68,13 @@ export class UserController {
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
+  @Get('email/:email')
+  getUserByEmail(@Param('email') email: string): Promise<User | null> {
+    return this.userService.getUserByEmail(email);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
   @Get()
   public async getUserList(): Promise<User[]> {
     return this.userService.getUserList({});
