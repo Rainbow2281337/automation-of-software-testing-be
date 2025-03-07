@@ -50,7 +50,6 @@ export class UserController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard)
   @Put(':id')
   public async updateUser(
     @Param('id') id: string,
@@ -67,7 +66,6 @@ export class UserController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard)
   @Get('email/:email')
   getUserByEmail(@Param('email') email: string): Promise<User | null> {
     return this.userService.getUserByEmail(email);
