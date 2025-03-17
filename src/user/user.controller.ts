@@ -84,4 +84,12 @@ export class UserController {
   public async deleteUser(@Param('id') id: string): Promise<unknown> {
     return this.userService.deleteUser(id);
   }
+
+  @HttpCode(HttpStatus.OK)
+  @Delete('email/:email')
+  public async deleteUserWithEmail(
+    @Param('email') email: string,
+  ): Promise<unknown> {
+    return this.userService.deleteUserByEmail(email);
+  }
 }

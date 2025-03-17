@@ -146,4 +146,15 @@ export class UserService extends RepositoryAbstract<User, UserDocument> {
   public async deleteUser(id: string): Promise<unknown> {
     return this.remove({ _id: id });
   }
+
+  /**
+   * Takes an email as a param and deletes the user
+   *
+   * @param email - email of the user
+   * @returns - deleted user
+   * @memberof UserService
+   */
+  public async deleteUserByEmail(email: string): Promise<unknown> {
+    return this.remove({ email: email });
+  }
 }
